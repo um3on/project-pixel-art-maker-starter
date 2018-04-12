@@ -1,24 +1,39 @@
-// Select color input
-var color=$("#colorPicker");
-
-// Select size input
-var height = $("#inputHeight");
-var width = $("#inputWidth");
-
 // When size is submitted by the user, call makeGrid()
-$("#sizePicker").submit(makeGrid);
+$('#sizePicker').submit(function(event){
+  event.preventDefault();
+  makeGrid();
+});
+
 
 function makeGrid() {
-var grid="";
 
-//creat grid html
-for(var r=0;r<height;r++){
- grid += "<tr>"
-  for(var c=0;c<width;c++){
-  grid +="<th></th>";
+  // Select size input
+  const rows = $('#inputHeight').val();
+  const cols = $('#inputWidth').val();
+
+  //another way to select element in the DOM
+  let table = document.getElementById('pixelCanvas');
+  
+  //restart Canvas to an empty canvas
+  table.innerHTML ='';
+  
+  //grid variable saves new grid html code
+  let grid='';
+  
+  //creat grid's html
+  for(let r=0;r<rows;r++){
+   grid += '<tr>';
+    for(let c=0;c<cols;c++){
+    grid +='<td class="cell"></td>';
+    }
+    grid += '</tr>';
   }
-  grid += "</tr>";
-}
-//append grid html to table element
-$(grid).appendTo("#pixelCanvas");
-}
+  
+  //assign created grid html to innerHtml of table
+  table.innerHTML = grid;
+
+  $('.cell').on('click',function(evt){
+    $( evt.target ).css( 'background', $('#colorPicker').val() );
+  });
+
+  }
